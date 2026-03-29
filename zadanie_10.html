@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+        <html lang="pl">
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Zadanie 10 - Menedżer Zadań</title>
+    <style>
+        :root {
+            --bg: #f3f5f7;
+            --card: #ffffff;
+            --text: #243447;
+            --muted: #6b7280;
+            --border: #cfd6de;
+            --line: #d7dee7;
+            --primary: #3b82f6;
+            --primary-soft: rgba(59, 130, 246, 0.15);
+            --danger: #7a2e2e;
+            --danger-bg: #f7dede;
+            --danger-border: #d9534f;
+            --shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 16px 36px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        header h1 {
+            margin: 0 0 18px;
+            font-size: clamp(2rem, 4vw, 3.3rem);
+            font-weight: 800;
+            color: #2f3d52;
+        }
+
+        .header-line {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            border-radius: 999px;
+        }
+
+        main {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 28px;
+        }
+
+        h2 {
+            margin: 4px 0 26px;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2f3d52;
+        }
+
+        .alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: var(--danger-bg);
+            border-left: 6px solid var(--danger-border);
+            color: var(--danger);
+            padding: 16px 18px;
+            border-radius: 8px;
+            margin-bottom: 28px;
+        }
+
+        .alert-icon {
+            font-size: 1.2rem;
+            line-height: 1;
+            margin-top: 1px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px 28px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #2f3d52;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 13px 14px;
+            font-size: 1rem;
+            background: #fff;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            box-shadow: none;
+            margin: 0;
+        }
+
+        .checkbox-row {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .checkbox-row label {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .hint {
+            font-size: 0.92rem;
+            color: var(--muted);
+        }
+
+        .actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 13px 18px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+            filter: brightness(0.98);
+        }
+
+        .btn-secondary {
+            background: #e8edf3;
+            color: #334155;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        footer {
+            margin-top: 18px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 20px 16px;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .full-width,
+            .checkbox-row,
+            .actions {
+                grid-column: auto;
+            }
+
+            .actions {
+                justify-content: stretch;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Rozbudowany Menedżer Zadań</h1>
+        <div class="header-line"></div>
+    </header>
+
+    <main>
+        <h2>Dodaj nowe zadanie</h2>
+
+        <div class="alert">
+            <div class="alert-icon">⚠</div>
+            <div>Kategoria jest wymagana</div>
+        </div>
+
+        <form class="form-grid">
+            <div class="form-group full-width">
+                <label for="tytul">Tytuł zadania: <span class="required">*</span></label>
+                <input type="text" id="tytul" name="tytul" required>
+            </div>
+
+            <div class="form-group">
+                <label for="osoba">Przypisana osoba:</label>
+                <input type="text" id="osoba" name="osoba">
+            </div>
+
+            <div class="form-group">
+                <label for="kategoria">Kategoria: <span class="required">*</span></label>
+                <select id="kategoria" name="kategoria" required>
+                    <option value="">Wybierz kategorię</option>
+                    <option>Domowe</option>
+                    <option>Praca</option>
+                    <option>Nauka</option>
+                    <option>Hobby</option>
+                    <option>Inne</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="data_start">Data startu: <span class="required">*</span></label>
+                <input type="date" id="data_start" name="data_start" required>
+            </div>
+
+            <div class="form-group">
+                <label for="data_koniec">Data końcowa: <span class="required">*</span></label>
+                <input type="date" id="data_koniec" name="data_koniec" required>
+            </div>
+
+            <div class="form-group">
+                <label for="priorytet">Priorytet: <span class="required">*</span></label>
+                <select id="priorytet" name="priorytet" required>
+                    <option value="">Wybierz priorytet</option>
+                    <option>Niski</option>
+                    <option>Średni</option>
+                    <option>Wysoki</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="czas">Szacowany czas (minuty):</label>
+                <input type="number" id="czas" name="czas" min="0" step="1">
+            </div>
+
+            <div class="form-group full-width">
+                <label for="opis">Opis zadania:</label>
+                <textarea id="opis" name="opis"></textarea>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="zalacznik">Załącznik:</label>
+                <input type="file" id="zalacznik" name="zalacznik">
+                <div class="hint">Możesz dodać dokument lub plik pomocniczy.</div>
+            </div>
+
+            <div class="checkbox-row">
+                <input type="checkbox" id="powiadomienia" name="powiadomienia">
+                <label for="powiadomienia">Wyślij powiadomienia o zmianach zadania</label>
+            </div>
+
+            <div class="actions">
+                <button type="reset" class="btn-secondary">Wyczyść</button>
+                <button type="submit" class="btn-primary">Zapisz zadanie</button>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        Formularz demonstracyjny — HTML/CSS Grid
+    </footer>
+</div>
+</body>
+</html>
